@@ -1,5 +1,5 @@
 # e.g. to run with command prompt
-# powershell -file "C:\Users\kelvi\Desktop\PowerShell\ps move files and log details.ps1"
+# powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\ps move files and log details.ps1"
 
 #########################################################################################################
 

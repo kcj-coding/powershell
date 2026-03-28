@@ -1,3 +1,6 @@
+# e.g. to run with command prompt
+# powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\get time differences in PowerShell.ps1"
+
 # get time differences in PowerShell
 
 # you can use date objects (not in string format)
