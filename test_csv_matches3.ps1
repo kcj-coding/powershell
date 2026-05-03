@@ -1,5 +1,5 @@
 # command prompt to run
-# powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\test_csv_matches2.ps1
+# powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\test_csv_matches2.ps1"
 
 $column_1 = "username"
 
