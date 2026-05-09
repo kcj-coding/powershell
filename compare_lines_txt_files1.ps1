@@ -37,6 +37,12 @@ $logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 #$logFile = "log_tasks.txt"
 #$logFilePath = Join-Path -Path $folder -ChildPath $logFile
 
+# create output folder if not exist
+if (-not (Test-Path $fileFolder)) {
+    New-Item -ItemType Directory -Path $fileFolder | Out-Null
+}
+
+
 # remove .txt files in folder
 #Get-ChildItem -Path $fileFolder -Filter *.txt -Recurse | Remove-Item
 
