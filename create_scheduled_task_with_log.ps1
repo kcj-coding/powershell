@@ -1,11 +1,11 @@
-# execute via command prompt
+# execute via command prompt - run as administrator
 # powershell -noprofile -executionpolicy bypass -File "C:\Users\kelvi\Desktop\PowerShell\create_scheduled_task_with_log.ps1"
 
 # Define task parameters
 $taskName = "MyScheduledTask"
 $taskDescription = "Runs daily at 7am and logs task creation"
 $actionScript = "powershell.exe"
-$actionArgs = "-Command `"Add-Content -Path 'C:\ScheduledTaskLog.txt' -Value 'Task ran successfully at $(Get-Date)'`""
+$actionArgs = "-noprofile -executionpolicy bypass -File ""C:\Users\kelvin\Desktop\PowerShell\run_script_xyz_log.ps1""
 
 # Create the action
 $action = New-ScheduledTaskAction -Execute $actionScript -Argument $actionArgs
@@ -18,3 +18,4 @@ Register-ScheduledTask -TaskName $taskName -Trigger $trigger -Action $action -De
 
 # Log task creation
 Add-Content -Path "C:\ScheduledTaskLog.txt" -Value "Scheduled task '$taskName' created successfully at $(Get-Date)"
+

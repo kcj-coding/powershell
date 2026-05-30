@@ -65,14 +65,18 @@ try {
             # level of match
             $level_match = '(?<=/)\w\d(?=/){1}'
             $match = [regex]::Matches($value, $level_match, 'IgnoreCase') # also SingleLine
+            $match = $match.Value
 
             # name match
             $sqlMatch = '(?<=/)(?!=/)(\w+\d+)[^-+]*.{1}'
             $match1 = [regex]::Matches($value, $sqlMatch, 'IgnoreCase') # also SingleLine
+            $match1 = $match1.Value
             $match1 = $match1 -replace '/', '_'
 
             # save to log file (individual matches o=in files)
-            $logName = "$i sql $match $match1 file.txt"
+            $logNametst = "$i sql $match $match1"
+            $logName = $logNametst.Substring(0, [System.Math]::Min(60, $logNametst.Length))
+            $logName = "$logName file.txt"
             $logFilePath = Join-Path -Path $outputFolder -ChildPath $logName
             $value | Set-Content -Path $logFilePath -Encoding UTF8
         }
