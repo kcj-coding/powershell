@@ -1,11 +1,11 @@
 ﻿# command prompt to run
-# powershell -noprofile -executionpolicy bypass -file "C:\Users\janan\Desktop\PowerShell\read_and_compare_changes_two_text_files_folder_monitoring.ps1"
+# powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\read_and_compare_changes_two_text_files_folder_monitoring.ps1"
 
 # Rename-Item -Path "c:\logfiles\daily_file.txt" -NewName "monday_file.txt"
 
 # configure manually
-$fileFolder = "C:\Users\janan\Desktop\tst" # to store logs
-$folderToView = "C:\Users\janan" # to search for files and sizes
+$fileFolder = "C:\Users\kelvi\Desktop\tst" # to store logs
+$folderToView = "C:\Users\kelvi" # to search for files and sizes
 
 $oldFiles = "old_files.txt"
 $oldFilePath = Join-Path -Path $fileFolder -ChildPath $oldFiles
