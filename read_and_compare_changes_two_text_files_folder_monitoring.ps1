@@ -1,10 +1,11 @@
 ﻿# command prompt to run
-# powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\read_and_compare_changes_two_text_files_folder_monitoring.ps1"
+# powershell -noprofile -executionpolicy bypass -file "C:\Users\janan\Desktop\PowerShell\read_and_compare_changes_two_text_files_folder_monitoring.ps1"
 
 # Rename-Item -Path "c:\logfiles\daily_file.txt" -NewName "monday_file.txt"
 
 # configure manually
-$fileFolder = "C:\Users\kelvi\Desktop\tst"
+$fileFolder = "C:\Users\janan\Desktop\tst" # to store logs
+$folderToView = "C:\Users\janan" # to search for files and sizes
 
 $oldFiles = "old_files.txt"
 $oldFilePath = Join-Path -Path $fileFolder -ChildPath $oldFiles
@@ -32,7 +33,7 @@ $logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 ####################################################################
 
 ### directory to list files and folders ####
-$dir = $fileFolder 
+$dir = $folderToView
 
 # get date
 $currentDateTime = Get-Date -Format "dd-MM-yyyy_HH:mm:ss" # "yyyy-MM-dd_HH:mm:ss"
@@ -40,11 +41,13 @@ $currentDate = Get-Date -Format "dd-MM-yyyy" # "yyyy-MM-dd"
 
 ########## get folders and sizes of folders in folder #################
 $results =@() # array
-$fldrSize = "{0:N2} MB" -f ((Get-ChildItem $dir -Recurse | Measure-Object -Property Length -Sum).Sum / 1MB)
+try {
+$fldrSize = "{0:N2} MB" -f ((Get-ChildItem $dir -Recurse -File | Measure-Object -Property Length -Sum).Sum / 1MB)
+} Catch {Write-Error $_}
 
 try {
 Get-ChildItem -Directory $dir | ForEach-Object {
-$size = (Get-ChildItem $_.FullName -Recurse | Measure-Object -Property Length -Sum).Sum / 1MB
+$size = (Get-ChildItem $_.FullName -Recurse -File | Measure-Object -Property Length -Sum).Sum / 1MB
 $results += [PSCustomObject]@{
 FolderName = $_.FullName
 SizeMB = "{0:N2}" -f $size
@@ -72,8 +75,9 @@ $results | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 $folder     = (Get-Item $dir).Parent
 $folderName = $folder.Name
 $folderPath = $folder.FullName
+#$files       = Get-ChildItem -Path $folderPath -Recurse
 
-$res = Get-ChildItem -Directory $dir -Recurse |
+$res = Get-ChildItem -Path $dir -Recurse |
     Select-Object Fullname #Name, FullName #,
         #@{n='FolderName';e={$folderName}},
         #@{n='Folder';e={$folderPath}}
@@ -106,6 +110,7 @@ $diff | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 "" | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 }
 
+"" | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 ##############################################################
 
 # check if what is in file b is in file a (if not these are removed entires)
@@ -126,6 +131,7 @@ $diff2 | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 "" | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 }
 
+"" | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 ############################################################
 
 # remove $oldFilePath
