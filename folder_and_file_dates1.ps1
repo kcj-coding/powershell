@@ -12,6 +12,8 @@ $logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 
 #####################################################################
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # check if log file exists
     if (Test-Path -Path $logFilePath -PathType Leaf) { # leaf means file container means folder
     # read file content if file exists
@@ -32,6 +34,7 @@ $currentDate = Get-Date -Format "dd-MM-yyyy" # "yyyy-MM-dd"
 "" | Out-File -FilePath $logFilePath -Append -Encoding UTF8
 #######################################################################
 
+try{
 # regex pattern
 $pattern = "(\d+\-\d+\-\d+)"
 
@@ -44,10 +47,10 @@ $matches = [regex]::Matches($_, $pattern, 'IgnoreCase') # also SingleLine
 $date = $matches.Groups[1].Value.Trim()
 write-host $date
 
-$destination = Join-Path -Path $fileFolder -ChildPath $date
+$destination = Join-Path -Path $fileFolder -ChildPath "folder_$date"
 
-write-host $destination
-write-host $_.FullName
+#write-host $destination
+#write-host $_.FullName
 
 # make folder if does not exist
 if(-not (Test-Path $destination)) { mkdir $destination | out-null}
@@ -55,9 +58,13 @@ if(-not (Test-Path $destination)) { mkdir $destination | out-null}
 # move file into folder
 #copy-item  $_.fullname ($_.fullname -replace $fileFolder, $destination) -Recurse -Force
 Move-Item $_.fullname -Destination $destination # -WhatIf
+Add-Content -Path $logFilePath -Value "Moved file: $_.fullname"
 
+$timer.stop
+Add-Content -Path $logFilePath -Value ""
+Add-Content -Path $logFilePath -Value "Time to complete: $timer.Elapsed.TotalSeconds seconds"
 }
-
+} catch { Write-Error $_}
 
 
 
