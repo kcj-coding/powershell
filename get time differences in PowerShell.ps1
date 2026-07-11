@@ -1,6 +1,12 @@
 # e.g. to run with command prompt
 # powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\get time differences in PowerShell.ps1"
 
+#################################
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+$timer.stop
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
+#################################
+
 # get time differences in PowerShell
 
 # you can use date objects (not in string format)
@@ -22,8 +28,11 @@ $timer = [System.Diagnostics.Stopwatch]::StartNew()
 $timer.Stop()
 
 #get timespan
-"Time elapsed: "
-$timer.Elapsed
+Echo "Time elapsed: "
+Echo $timer.Elapsed
+Echo $timer.Elapsed.TotalMinutes
+Echo $timer.Elapsed.TotalSeconds
+
 
 # to stop closing automatically
 Pause
