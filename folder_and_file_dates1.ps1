@@ -4,13 +4,13 @@
 # Rename-Item -Path "c:\logfiles\daily_file.txt" -NewName "monday_file.txt"
 
 # configure manually
-$fileFolder = "C:\Users\kelvi\Desktop\date folder" # to store logs
-
-
+$fileFolder = "C:\Users\kelvi\Desktop\date folder" # to store logs and search for files
+$fileTypes = "*.txt" # type of files to bind into folders, * is wildcard operator
 $logFile = "log_tasks.txt"
-$logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 
 #####################################################################
+
+$logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 
@@ -39,7 +39,7 @@ try{
 $pattern = "(\d+\-\d+\-\d+)"
 
 # find matches
-$files = Get-ChildItem -Path $fileFolder -Filter *.txt -Recurse| Where-Object{($_.FullName -match $pattern)} |
+$files = Get-ChildItem -Path $fileFolder -Filter $fileTypes -Recurse| Where-Object{($_.FullName -match $pattern)} |
 % {
 # get date from file name
 $matches = [regex]::Matches($_, $pattern, 'IgnoreCase') # also SingleLine
@@ -58,12 +58,12 @@ if(-not (Test-Path $destination)) { mkdir $destination | out-null}
 # move file into folder
 #copy-item  $_.fullname ($_.fullname -replace $fileFolder, $destination) -Recurse -Force
 Move-Item $_.fullname -Destination $destination # -WhatIf
-Add-Content -Path $logFilePath -Value "Moved file: $_.fullname"
+Add-Content -Path $logFilePath -Value "Moved file: $_"
 
+}
 $timer.stop
 Add-Content -Path $logFilePath -Value ""
-Add-Content -Path $logFilePath -Value "Time to complete: $timer.Elapsed.TotalSeconds seconds"
-}
+Add-Content -Path $logFilePath -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 } catch { Write-Error $_}
 
 
