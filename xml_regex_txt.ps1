@@ -11,6 +11,8 @@ $outputLog = Join-Path -Path $outputFolder -ChildPath $outputLog
 
 $outputLog1 = Join-Path -Path $outputFolder -ChildPath $outputLog1
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # create output folder if not exist
 if (-not (Test-Path $outputFolder)) {
     New-Item -ItemType Directory -Path $outputFolder | Out-Null
@@ -85,6 +87,9 @@ try {
         $cleaned | Set-Content -Path $outputLog -Encoding UTF8
 
         Write-Host "Extracted and cleaned $($matches.Count) <attribute> values to: $outputLog"
+
+        $timer.stop
+        Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
     }
 # remove txt file
 if (Test-Path $outputLog1) {

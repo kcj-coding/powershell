@@ -11,6 +11,7 @@ $fldr = read-host "What is folder"
 $fileType = read-host "`nWhat is filetype"
 $paT = read-host "`nWhat is string"
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
 
 #### clear console and begin ###
 clear-host
@@ -38,3 +39,6 @@ Get-ChildItem -Path $fldr -Filte "*.$fileType" -File -Recurse |
 Sort-Object LastWriteTime -Descending |
 Where-Object { Select-String -Path $_.FullName -Pattern $paT -Quiet
 Add-Content -Path $deleteLog -Value "FOUND match in $_"}
+
+$timer.stop
+Add-Content -Path $deleteLog -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"

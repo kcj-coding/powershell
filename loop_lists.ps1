@@ -10,6 +10,8 @@ $logFolder = "C:\Users\kelvi\Desktop"
 $logFile = "log_tasks_xxx.txt"
 $logFilePath = Join-Path -Path $logFolder -ChildPath $logFile
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # get date
 $currentDateTime = Get-Date -Format "dd-MM-yyyy_HH:mm:ss" # "yyyy-MM-dd_HH:mm:ss"
 $currentDate = Get-Date -Format "dd-MM-yyyy" # "yyyy-MM-dd"
@@ -36,6 +38,10 @@ try {
             Add-Content -Path $logFilePath -Value " item number is: $i and item is $item which is a $type and type number is: $j"
         }
     }
+
+
+$timer.stop
+Add-Content -Path $logFilePath -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 }
 catch {
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor -Red

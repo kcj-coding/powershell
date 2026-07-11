@@ -10,6 +10,8 @@ $logFile = "C:\Path\To\Log\move_log.txt"
 
 $NL = [System.Environment]::NewLine
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 ############################# functions #################################################################
 
 function Check-FolderPath {
@@ -190,6 +192,10 @@ if ($response -eq "1"){
 echo "Copied this many files: $filesFilterCount"}
 elseif ($response -eq "2"){
 echo "Moved this many files: $filesFilterCount"}
+
+$timer.stop
+Write-Host "$NL" # make new line
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 
 # keep PowerShell script open
 Write-Host "$NL" # make new line

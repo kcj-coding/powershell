@@ -10,6 +10,8 @@ $outputFolder = "C:\Users\kelvi\Desktop\tst\outputs"
 $inputFile = Join-Path -Path $inputFolder -ChildPath $inputText
 $outputFile = Join-Path -Path $outputFolder -ChildPath $outputText
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 $folderList = @($inputFolder, $outputFolder)
 
 # create folder if not exist
@@ -52,6 +54,8 @@ try {
    $changed | Set-Content -Path $outputFile -Encoding UTF8
 
    Write-Host "Written values to: $outputFile"
+   $timer.stop
+   Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
     
 
 }

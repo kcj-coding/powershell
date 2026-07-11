@@ -12,6 +12,8 @@ $logFolder = "C:\Users\kelvi\Desktop"
 $logFile = "log_spec_chars.txt"
 $logFilePath = Join-Path -Path $logFolder -ChildPath $logFile
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # create output folder if not exist
 if (-not (Test-Path $logFolder)) {
     New-Item -ItemType Directory -Path $logFolder | Out-Null
@@ -51,6 +53,10 @@ try {
 
     # output results
     $matches | Out-File -FilePath $logFilePath -Append -Encoding UTF8
+
+
+    $timer.stop
+    Add-Content -Path $logFilePath -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 }
 catch {
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor -Red

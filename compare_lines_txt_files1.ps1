@@ -37,6 +37,8 @@ $logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 #$logFile = "log_tasks.txt"
 #$logFilePath = Join-Path -Path $folder -ChildPath $logFile
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # create output folder if not exist
 if (-not (Test-Path $fileFolder)) {
     New-Item -ItemType Directory -Path $fileFolder | Out-Null
@@ -95,6 +97,8 @@ try {
     }
     
     Write-Host "Comparison complete. Results saved to $logFile"
+    $timer.stop
+    Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 }
 catch {
 Write-Error $_

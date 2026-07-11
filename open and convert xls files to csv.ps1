@@ -26,6 +26,8 @@ $DestinationFolder = Read-Host "Destination folder"
 $SheetName = Read-Host "Sheet name"
 $EndColumn = Read-Host "Number of columns"
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # Create destination folder if it doesn't exist
 if (-not (Test-Path $DestinationFolder)) {
     New-Item -ItemType Directory -Path $DestinationFolder | Out-Null
@@ -64,6 +66,9 @@ Get-ChildItem -Path $SourceFolder -Filter "*.xls*" | ForEach-Object {
    $fileLogMessage = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') SUCCESS: File '$excelFile' converted to '$baseName.csv'."
    Add-Content -Path $logFile -Value $fileLogMessage
 }
+
+$timer.stop
+Add-Content -Path $logFile -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 
 # Prevent from closing
 Pause

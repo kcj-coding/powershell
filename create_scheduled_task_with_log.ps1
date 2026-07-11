@@ -7,6 +7,8 @@ $taskDescription = "Runs daily at 7am and logs task creation"
 $actionScript = "powershell.exe"
 $actionArgs = "-noprofile -executionpolicy bypass -File ""C:\Users\kelvin\Desktop\PowerShell\run_script_xyz_log.ps1""
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # Create the action
 $action = New-ScheduledTaskAction -Execute $actionScript -Argument $actionArgs
 
@@ -19,3 +21,5 @@ Register-ScheduledTask -TaskName $taskName -Trigger $trigger -Action $action -De
 # Log task creation
 Add-Content -Path "C:\ScheduledTaskLog.txt" -Value "Scheduled task '$taskName' created successfully at $(Get-Date)"
 
+$timer.stop
+Add-Content -Path "C:\ScheduledTaskLog.txt" -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"

@@ -10,6 +10,8 @@ $logFilePath = Join-Path -Path $logFolder -ChildPath $logFile
 $sender1 = "email1@email.com"
 $sender2 = "email2@email.com"
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 
 
 #### clear console and begin ###
@@ -54,6 +56,8 @@ try {
     }
 
     Write-Host "Deletion complete."
+    $timer.stop
+    Add-Content -Path $deletelog -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 }
 catch {
     Write-Host "Error: $($_.Exception.Message)"

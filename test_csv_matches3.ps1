@@ -14,6 +14,8 @@ $otherFilesFolder = "C:\Users\kelvi\Desktop\PowerShell\Input_Csv" # take column_
 # Output file
 $outputFile = "C:\Users\kelvi\Desktop\PowerShell\Output_Csv\JoinedOutput.csv" # user specified file name
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # Extract reference filename
 $referenceFileName = Split-Path $referenceFile -Leaf
 
@@ -62,3 +64,6 @@ foreach ($col in $m.PSObject.Properties.Name)
 
 # Export clean flattened CSV
 $results | Export-Csv -Path $outputFile -NoTypeInformation
+
+$timer.stop
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"

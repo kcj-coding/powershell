@@ -7,6 +7,9 @@ $excel.Visible = $false
 $workbook = $excel.Workbooks.Open("C:\Path\To\Your\File.xlsx")
 $sheet = $workbook.Sheets.Item(1)
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
+
 # Get last row with data
 $lastRow = $sheet.UsedRange.Rows.Count
 
@@ -38,3 +41,6 @@ for ($i = 1; $i -le $lastRow; $i++) {
 $workbook.Close($false)
 $excel.Quit()
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
+
+$timer.stop
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"

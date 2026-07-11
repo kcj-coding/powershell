@@ -3,6 +3,8 @@
 # command prompt to run
 # powershell -noprofile -executionpolicy bypass -file "C:\Users\kelvi\Desktop\PowerShell\scheduled_task_user.ps1"
 
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
+
 
 # list scheduled tasks that run under a system like account
 try {
@@ -24,6 +26,9 @@ try {
      |
      Sort-Object TaskPath, TaskName |
      Format-Table -AutoSize
+
+$timer.stop
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 }
 catch {
     Write-Error "Error retrieving scheduled tasks: $_"

@@ -18,6 +18,8 @@ $logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 
 #####################################################################
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # check if log file exists
     if (Test-Path -Path $logFilePath -PathType Leaf) { # leaf means file container means folder
     # read file content if file exists
@@ -150,6 +152,10 @@ Rename-Item -Path $newFilePath -NewName $oldFilePath
 }
 
 # Source - https://stackoverflow.com/a/61299576
+
+
+$timer.stop
+Write-Host "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
 
 } catch {
 Write-Error $_

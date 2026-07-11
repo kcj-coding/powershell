@@ -15,6 +15,8 @@ $logFilePath = Join-Path -Path $fileFolder -ChildPath $logFile
 
 #####################################################################
 
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+
 # check if log file exists
     if (Test-Path -Path $logFilePath -PathType Leaf) { # leaf means file container means folder
     # read file content if file exists
@@ -62,3 +64,7 @@ $res = Get-ChildItem -Path $dir -Recurse |
 
 # write to csv
 $res | Out-File -FilePath $newFilePath -Encoding UTF8
+
+
+$timer.stop
+Add-Content -Path $logFilePath -Value "Time to complete: $($timer.Elapsed.TotalSeconds) seconds"
