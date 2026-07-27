@@ -7,6 +7,7 @@
 $sourceFolder = "C:\Path\To\Source"
 $destinationFolder = "C:\Path\To\Destination"
 $logFile = "C:\Path\To\Log\move_log.txt"
+$nameExtension = "" # add to append to filename
 
 $NL = [System.Environment]::NewLine
 
@@ -70,6 +71,10 @@ $extension = Read-Host 'Define the file extension to filter files (set to $null 
 Write-Host "$NL" # make new line
 
 $keyword = Read-Host 'Define the keyword(s) to filter files and use comma to separate multiple keywords (set to $null or just click Enter key to ignore keyword filter)' # ' to capture special characters and speech marks
+
+Write-Host "$NL" # make new line
+
+$nameExtension = Read-Host 'Define the new filename extension to use (set to $null or just click Enter key to ignore keyword filter)' # ' to capture special characters and speech marks
 
 # Define the file extension and keyword to filter files
 #$extension = ".txt"     # Set to $null or "" to ignore extension filter
@@ -165,7 +170,11 @@ Add-Content -Path $logFile -Value $filesFilterCountMessage
 
 foreach ($file in $filesToCopy) {
     $sourcePath = $file.FullName
-    $destinationPath = Join-Path -Path $destinationFolder -ChildPath $file.Name
+     if ($null -eq $nameExtension -or $nameExtension -eq "") {
+    $destinationPath = Join-Path -Path $destinationFolder -ChildPath $file.Name}
+     else {
+    $abc = "{0}_{1}{2}" -f $file.BaseName, $nameExtension, $file.Extension
+    $destinationPath = Join-Path -Path $destinationFolder -ChildPath $abc}
     $fileSize = [Math]::Round($file.Length / 1KB, 2)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
@@ -176,7 +185,7 @@ foreach ($file in $filesToCopy) {
         	Copy-Item -Path $sourcePath -Destination $destinationPath} # copies file
         else {
                 Write-Host "Error" -ForegroundColor Red}
-        $logEntry = "$timestamp - Moved '$($file.Name)' ($fileSize KB) to '$destinationFolder'"
+        $logEntry = "$timestamp - Moved '$($file.Name)' ($fileSize KB) to '$destinationFolder' as $destiunationPath"
     } catch {
         $logEntry = "$timestamp - FAILED to move '$($file.Name)': $_"
     }
