@@ -6,8 +6,11 @@
 # Define source and destination folders
 $sourceFolder = "C:\Path\To\Source"
 $destinationFolder = "C:\Path\To\Destination"
-$logFile = "C:\Path\To\Log\move_log.txt"
+$logFileName="log.txt"
+#$logFile = "C:\Path\To\Log\move_log.txt"
 $nameExtension = "" # add to append to filename
+
+$logFile = Join-Path -Path $destinationFolder -ChildPath $logFileName
 
 $NL = [System.Environment]::NewLine
 
@@ -189,7 +192,7 @@ foreach ($file in $filesToCopy) {
     } catch {
         $logEntry = "$timestamp - FAILED to move '$($file.Name)': $_"
     }
-
+    
     Add-Content -Path $logFile -Value $logEntry
 }
 
